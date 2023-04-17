@@ -12,5 +12,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(variables.appPort, () => {
-  console.log('Example app listening on port 3000!')
+  console.log('Programming Shikho listening on port ' +  `${variables.appPort}!`)
 })
