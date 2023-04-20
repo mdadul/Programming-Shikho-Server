@@ -29,15 +29,7 @@ const userSchema = new mongoose.Schema(
         avatar: {
             type: String,
             default: 'https://res.cloudinary.com/dcqxcejza/image/upload/v1681748314/default-avatar-profile-flat-icon-vector-contact-symbol-illustration-184752213_hutkwd.jpg'
-        },
-        tokens: [
-            {
-                token: {
-                    type: String,
-                    required: true,
-                },
-            }
-        ],
+        }
     },
     { timestamps: true }
 );
