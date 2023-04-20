@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const initDB = require('./config/connection');
 const variables = require('./config/variables');
@@ -10,9 +11,12 @@ const userRouter = require('./routers/user');
 
 const app = express()
 const port = variables.appPort;
+
+
 app.use(cors())
 app.use(express.json())
 initDB();
+app.use(cookieParser(variables.authKey));
 
 app.use('/users', userRouter);
 
