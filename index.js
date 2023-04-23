@@ -8,6 +8,7 @@ const variables = require('./config/variables');
 
 // router
 const userRouter = require('./routers/user');
+const courseRouter = require('./routers/course');
 
 const app = express()
 const port = variables.appPort;
@@ -19,6 +20,7 @@ initDB();
 app.use(cookieParser(variables.authKey));
 
 app.use('/users', userRouter);
+app.use('/courses', courseRouter)
 
 // // Error handling
 // app.use((req, res, next) => {
