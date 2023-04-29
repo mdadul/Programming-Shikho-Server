@@ -22,22 +22,6 @@ app.use(cookieParser(variables.authKey));
 app.use('/users', userRouter);
 app.use('/courses', courseRouter)
 
-// // Error handling
-// app.use((req, res, next) => {
-//   const error = new Error('Not found');
-//   error.status = 404;
-//   next(error);
-// });
-
-// app.use((err, req, res, next) => {
-//   res.status(err.status || 500);
-//   res.send({
-//     error:{
-//       message : err.message,
-//     }
-//   })
-// });
-
 app.listen(port, () => {
   console.log('Programming Shikho listening on port ' + port)
 })
