@@ -13,12 +13,11 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.signup = async (req, res) => {
-  // Exisiting user check
   const user = new User(req.body);
   try {
     const existingUser = await User.findOne({ email: user.email });
     if (existingUser) {
-      res.status(400).json({ msg: "User already exists" });
+      return res.status(400).json({ msg: "User already exists" });
     }
 
     const hasedPassword = await bcrypt.hash(user.password, 10);
@@ -29,10 +28,9 @@ exports.signup = async (req, res) => {
     });
 
     const token = jwt.sign({ _id: user._id.toString() }, variables.authKey);
-    res.status(201).json({ user: result, token });
+    return res.status(201).json({ user: result, token });
   } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
+    res.status(500).send(error);
   }
 };
 
@@ -52,7 +50,6 @@ exports.login = async (req, res) => {
     });
     res.status(201).json({ user, token });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: error.message });
+    return res.status(500).json({ msg: error.message });
   }
 };

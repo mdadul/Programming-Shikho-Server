@@ -4,7 +4,8 @@ const User = require("../models/user");
 
 const auth = async (req, res, next) => {
   try {
-    const token = req.header("Authorization").replace("Bearer ", "");
+    const token = req.header("Authorization") ? req.header("Authorization").replace("Bearer ", "") : null;
+    // const token = req.header("Authorization").replace("Bearer ", "");
 
     if (!token) {
       throw new Error("No token found");
