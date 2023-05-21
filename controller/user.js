@@ -6,9 +6,18 @@ const variables = require("../config/variables");
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find({});
-    res.status(200).send(users);
+    res.status(200).json({ users });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).json({ msg: error.message });
+  }
+};
+// get only teachers
+exports.getTeachers = async (req, res) => {
+  try {
+    const users = await User.find({ role: "teacher" });
+    res.status(200).json({ users });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
   }
 };
 
@@ -46,10 +55,46 @@ exports.login = async (req, res) => {
       throw new Error("Password does not match");
     }
     const token = jwt.sign({ _id: user._id.toString() }, variables.authKey, {
-      expiresIn: "1h",
+      expiresIn: 3600 * 24 * 7,
     });
     res.status(201).json({ user, token });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
+  }
+};
+
+// get a user
+exports.getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      throw new Error("No user found");
+    }
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
+};
+
+exports.updateUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      throw new Error("No user found");
+    }
+
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ["role"];
+    const isValidOperation = updates.every((update) =>
+      allowedUpdates.includes(update)
+    );
+    if (!isValidOperation) {
+      throw new Error("Invalid updates");
+    }
+    updates.forEach((update) => (user[update] = req.body[update]));
+    await user.save();
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
   }
 };

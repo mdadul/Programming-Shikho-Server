@@ -13,5 +13,10 @@ router.post("/signup", userController.signup);
 
 // Login a user
 router.post("/login", userController.login);
+// get a user
+router.get("/:id", auth, role.check(ROLES.ADMIN), userController.getUser);
+
+// update a user
+router.put("/:id", auth, role.check(ROLES.ADMIN), userController.updateUser);
 
 module.exports = router;
