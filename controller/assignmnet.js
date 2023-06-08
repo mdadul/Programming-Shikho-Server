@@ -2,7 +2,7 @@ const Assignment = require('../models/assignment');
 
 exports.getAllAssignments = async (req, res) => {
     try {
-        const assignments = await Assignment.find({});
+        const assignments = await Assignment.find({courseId: req.params.courseId});
         if(assignments.length === 0) res.status(200).json({ msg: "No assignments found" });
         res.status(200).json({ assignments });
     } catch (error) {
@@ -15,16 +15,6 @@ exports.getAssignmentById = async (req, res) => {
         const assignment = await Assignment.findById(req.params.id);
         if(!assignment) res.status(200).json({ msg: "No assignment found" });
         res.status(200).json({ assignment });
-    } catch (error) {
-        res.status(400).json({ msg: error.message });
-    }
-};
-
-exports.getAssignmentsByCourseId = async (req, res) => {
-    try {
-        const assignments = await Assignment.find({ courseId: req.params.id });
-        if(assignments.length === 0) res.status(200).json({ msg: "No assignments found" });
-        res.status(200).json({ assignments });
     } catch (error) {
         res.status(400).json({ msg: error.message });
     }

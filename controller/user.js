@@ -75,14 +75,12 @@ exports.getUser = async (req, res) => {
     res.status(400).json({ msg: error.message });
   }
 };
-
-exports.updateUser = async (req, res) => {
+exports.updateRole = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
       throw new Error("No user found");
     }
-
     const updates = Object.keys(req.body);
     const allowedUpdates = ["role"];
     const isValidOperation = updates.every((update) =>
@@ -98,3 +96,38 @@ exports.updateUser = async (req, res) => {
     res.status(400).json({ msg: error.message });
   }
 };
+
+exports.updateUser = async (req, res) => {
+  try {
+   const user = await User.findById(req.params.id);
+    if (!user) {
+      throw new Error("No user found");
+    }
+    const updates = Object.keys(req.body);
+    updates.forEach((update) => (user[update] = req.body[update]));
+    await user.save();
+    res.status(200).json({ user });
+
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ msg: error.message });
+  }
+};
+
+
+exports.statistics = async (req, res) => {
+  try{
+    const users = await User.find({});
+    const teachers = await User.find({role: "teacher"});
+    const students = await User.find({role: "student"});
+
+    const list = {
+      users,
+      teachers,
+      students
+    }
+    res.status(200).json(list);
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
+}

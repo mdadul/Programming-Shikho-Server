@@ -4,7 +4,9 @@ const User = require("../models/user");
 
 const auth = async (req, res, next) => {
   try {
-    const token = req.header("Authorization") ? req.header("Authorization").split(' ')[1] : null;
+    const token = req.header("Authorization")
+      ? req.header("Authorization").split(" ")[1]
+      : null;
 
     if (!token) {
       throw new Error("No token found");
@@ -18,7 +20,12 @@ const auth = async (req, res, next) => {
     if (!user) {
       throw new Error("User not found");
     }
-    req.user = user;
+
+
+    req.userId = user._id;
+    req.userRole = user.role;
+    req.userEmail = user.email;
+    req.userName = user.name;
 
     next();
   } catch (error) {
