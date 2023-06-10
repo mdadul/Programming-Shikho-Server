@@ -6,7 +6,7 @@ const contentSchema = new mongoose.Schema({
     ref: "Course",
     required: true,
   },
-  contentTitle: {
+  title: {
     type: String,
     required: true,
   },
@@ -14,15 +14,10 @@ const contentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  contentUrl: {
+  videoUrl: {
     type: String,
     required: true,
   },
-  contentDuration: {
-    type: String,
-    required: true,
-  },
- 
 });
 
 module.exports = contentSchema;

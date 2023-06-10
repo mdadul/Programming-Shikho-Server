@@ -1,17 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const contentController = require("../controller/content");
-const {ROLES} = require("../constants");
+const { ROLES } = require("../constants");
 const role = require("../middlewares/roles");
+const auth = require("../middlewares/auth");
 
-router.post("/", role.check(ROLES.ADMIN), contentController.createContent);
+router.post("/",auth, role.check(ROLES.ADMIN, ROLES.TEACHER), contentController.createContent);
 
-router.get("/", contentController.getContent);
+router.get("/:id",auth, contentController.getContentByCourseId);
 
-router.get("/:id", contentController.getContentById);
+router.put("/:id",auth, role.check(ROLES.ADMIN, ROLES.TEACHER), contentController.updateContent);
 
-router.put("/:id", role.check(ROLES.ADMIN), contentController.updateContent);
-
-router.delete("/:id", role.check(ROLES.ADMIN), contentController.deleteContent);
+router.delete("/:id",auth, role.check(ROLES.ADMIN,ROLES.TEACHER), contentController.deleteContent);
 
 module.exports = router;

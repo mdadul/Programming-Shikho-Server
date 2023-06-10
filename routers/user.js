@@ -20,9 +20,19 @@ router.get("/:id", auth, userController.getUser);
 router.put("/update/:id", auth, userController.updateUser);
 
 // update role
-router.put("/role/:id", auth, role.check(ROLES.ADMIN), userController.updateRole);
+router.put(
+  "/role/:id",
+  auth,
+  role.check(ROLES.ADMIN),
+  userController.updateRole
+);
 
 // statistics
-router.get("/statistics", auth, role.check(ROLES.ADMIN), userController.statistics);
+router.get(
+  "/statistics",
+  auth,
+  role.check(ROLES.ADMIN),
+  userController.statistics
+);
 
 module.exports = router;

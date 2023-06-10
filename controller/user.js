@@ -91,6 +91,7 @@ exports.updateRole = async (req, res) => {
     }
     updates.forEach((update) => (user[update] = req.body[update]));
     await user.save();
+    
     res.status(200).json({ user });
   } catch (error) {
     res.status(400).json({ msg: error.message });
@@ -99,35 +100,37 @@ exports.updateRole = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-   const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id);
     if (!user) {
       throw new Error("No user found");
     }
     const updates = Object.keys(req.body);
     updates.forEach((update) => (user[update] = req.body[update]));
     await user.save();
-    res.status(200).json({ user });
 
+    const token = jwt.sign({ _id: user._id.toString() }, variables.authKey, {
+      expiresIn: 3600 * 24 * 7,
+    });
+    res.status(200).json({ user, token });
   } catch (error) {
     console.log(error.message);
     res.status(400).json({ msg: error.message });
   }
 };
 
-
 exports.statistics = async (req, res) => {
-  try{
+  try {
     const users = await User.find({});
-    const teachers = await User.find({role: "teacher"});
-    const students = await User.find({role: "student"});
+    const teachers = await User.find({ role: "teacher" });
+    const students = await User.find({ role: "student" });
 
     const list = {
       users,
       teachers,
-      students
-    }
+      students,
+    };
     res.status(200).json(list);
   } catch (error) {
     res.status(400).json({ msg: error.message });
   }
-}
+};
