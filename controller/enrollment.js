@@ -1,10 +1,11 @@
-const enrollment = require("../models/enrollment");
+const Enrollment = require("../models/enrollment");
 
 exports.getAllEnrollments = async (req, res) => {
   try {
-    const enrollments = await enrollment.find({});
+    const enrollments = await Enrollment.find({ courseId: req.params.id });
     if (enrollments.length === 0)
       res.status(200).json({ msg: "No enrollments found" });
+
     res.status(200).json({ enrollments });
   } catch (error) {
     res.status(400).json({ msg: error.message });
@@ -13,7 +14,7 @@ exports.getAllEnrollments = async (req, res) => {
 
 exports.getEnrollmentById = async (req, res) => {
   try {
-    const enrollment = await enrollment.findById(req.params.id);
+    const enrollment = await Enrollment.findById(req.params.id);
     if (!enrollment) {
       throw new Error("Enrollment not found");
     }
@@ -27,9 +28,16 @@ exports.getEnrollmentById = async (req, res) => {
 
 exports.createEnrollment = async (req, res) => {
   try {
-    const enrollment = new enrollment(req.body);
+    const isEnrolled = await Enrollment.findOne({
+      courseId: req.body.courseId,
+      userId: req.body.userId,
+    });
+    if (isEnrolled) {
+      throw new Error("Already enrolled");
+    }
+    const enrollment = new Enrollment(req.body);
     await enrollment.save();
-    res.status(201).json({ enrollment });
+    res.status(200).json({ msg: "Successfully Enrolled", enrollment });
   } catch (error) {
     res.status(400).json({ msg: error.message });
   }
@@ -37,7 +45,7 @@ exports.createEnrollment = async (req, res) => {
 
 exports.updateEnrollment = async (req, res) => {
   try {
-    const enrollment = await enrollment.findById(req.params.id);
+    const enrollment = await Enrollment.findById(req.params.id);
     if (!enrollment) {
       throw new Error("Enrollment not found");
     }
@@ -52,11 +60,23 @@ exports.updateEnrollment = async (req, res) => {
 
 exports.deleteEnrollment = async (req, res) => {
   try {
-    const enrollment = await enrollment.findByIdAndDelete(req.params.id);
+    const enrollment = await Enrollment.findByIdAndDelete(req.params.id);
     if (!enrollment) {
       throw new Error("Enrollment not found");
     }
     res.status(200).json({ msg: "Enrollment deleted successfully" });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
+};
+
+// get all my enrollments
+exports.getMyEnrollments = async (req, res) => {
+  try {
+    const enrollments = await Enrollment.find({ userId: req.user._id });
+    if (enrollments.length === 0)
+      res.status(200).json({ msg: "No enrollments found" });
+    res.status(200).json({ enrollments });
   } catch (error) {
     res.status(400).json({ msg: error.message });
   }

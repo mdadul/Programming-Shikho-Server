@@ -22,6 +22,10 @@ app.use(express.json())
 initDB();
 app.use(cookieParser(variables.authKey));
 
+app.get('/', (req, res) => {
+  res.send('Programming Shikho Server is running')
+})
+
 app.use('/users', userRouter);
 app.use('/courses', courseRouter);
 app.use('/contents', contentRouter);

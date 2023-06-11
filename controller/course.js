@@ -25,7 +25,6 @@ exports.getCourseById = async (req, res) => {
 
 exports.createCourse = async (req, res) => {
  try{
-  console.log(req.body)
   const course = new Course(req.body);
   await course.save();
   res.status(201).json({ course });
