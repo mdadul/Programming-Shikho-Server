@@ -12,12 +12,22 @@ router.get("/", courseController.getAllCourses);
 router.get("/:id", courseController.getCourseById);
 
 // Creating a course
-router.post("/", auth, role.check(ROLES.ADMIN, ROLES.STUDENT), courseController.createCourse);
+router.post("/", auth, role.check(ROLES.ADMIN), courseController.createCourse);
 
 // Updating a course
-router.put("/:id", auth, role.check(ROLES.ADMIN), courseController.updateCourse);
+router.put(
+  "/:id",
+  auth,
+  role.check(ROLES.ADMIN),
+  courseController.updateCourse
+);
 
 // Deleting a course
-router.delete("/:id", auth, role.check(ROLES.ADMIN), courseController.deleteCourse);
+router.delete(
+  "/:id",
+  auth,
+  role.check(ROLES.ADMIN),
+  courseController.deleteCourse
+);
 
 module.exports = router;

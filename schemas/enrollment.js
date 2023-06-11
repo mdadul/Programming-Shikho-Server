@@ -12,10 +12,19 @@ const enrollmentSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  phoneNumber : {
+    type: String,
+    required: true,
+
+  },
+  transactionId : {
+    type: String,
+    required: true,
+
+  },
   enrollmentDate: {
     type: Date,
     default: Date.now,
-    required: true,
   },
   enrollmentStatus: {
     type: String,
@@ -25,7 +34,6 @@ const enrollmentSchema = new mongoose.Schema({
       COURSE_STATUS.REJECTED,
     ],
     default: COURSE_STATUS.PENDING,
-    required: true,
   },
 });
 

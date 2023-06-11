@@ -25,7 +25,6 @@ exports.getCourseById = async (req, res) => {
 
 exports.createCourse = async (req, res) => {
  try{
-  console.log(req.body)
   const course = new Course(req.body);
   await course.save();
   res.status(201).json({ course });
@@ -42,7 +41,6 @@ exports.updateCourse = async (req, res) => {
       throw new Error("Course not found");
     }
     const updates = Object.keys(req.body);
-    
     updates.forEach((update) => (course[update] = req.body[update]));
     await course.save();
     res.status(200).json({ course });
