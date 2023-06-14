@@ -13,6 +13,7 @@ exports.createContent = async (req, res) => {
 exports.getContentByCourseId = async (req, res) => {
   try {
     const content = await Content.find({ courseId: req.params.id });
+    console.log(content);
     return res.status(200).json({ content });
   } catch (error) {
     return res.status(500).json({ msg: error.message });

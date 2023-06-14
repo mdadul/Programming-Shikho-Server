@@ -25,7 +25,7 @@ exports.assignTeacher = async (req, res) => {
     }
     const teacher = new Teacher(req.body);
     await teacher.save();
-    return res.status(201).json({ teacher });
+    return res.status(201).json({ msg: "Successfully Assigned",teacher });
   } catch (error) {
     return res.status(400).json({ msg: error.message });
   }

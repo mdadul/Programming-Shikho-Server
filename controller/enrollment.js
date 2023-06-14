@@ -85,9 +85,11 @@ exports.deleteEnrollment = async (req, res) => {
 // get all my enrollments
 exports.getMyEnrollments = async (req, res) => {
   try {
-    const enrollments = await Enrollment.find({ userId: req.user._id });
+    const enrollments = await Enrollment.find({ userId: req.params.id })
+      .populate("courseId", "name category image")
+      .exec();
     if (enrollments.length === 0)
-      return res.status(200).json({ msg: "No enrollments found" });
+      return res.status(200).json({ msg: "No enrollments found", enrollments });
     return res.status(200).json({ enrollments });
   } catch (error) {
     return res.status(400).json({ msg: error.message });
