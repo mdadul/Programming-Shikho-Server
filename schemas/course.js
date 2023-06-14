@@ -25,13 +25,7 @@ const courseSchema = new mongoose.Schema({
     type: String,
     default: "Uncategorized",
     required: true,
-  },
-  teacher: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Teacher",
-    },
-  ]
+  }
 });
 
 module.exports = courseSchema;

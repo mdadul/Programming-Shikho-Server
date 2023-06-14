@@ -6,13 +6,13 @@ const variables = require("../config/variables");
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find({});
-    res.status(200).json({ users });
+    return res.status(200).json({ users });
   } catch (error) {
-    res.status(400).json({ msg: error.message });
+    return res.status(400).json({ msg: error.message });
   }
 };
 // get only teachers
-exports.getTeachers = async (req, res) => {
+exports.getAllTeachers = async (req, res) => {
   try {
     const users = await User.find({ role: "teacher" });
     res.status(200).json({ users });
@@ -39,7 +39,7 @@ exports.signup = async (req, res) => {
     const token = jwt.sign({ _id: user._id.toString() }, variables.authKey);
     return res.status(201).json({ user: result, token });
   } catch (error) {
-    res.status(500).send(error);
+    return res.status(500).send(error);
   }
 };
 
@@ -57,7 +57,7 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ _id: user._id.toString() }, variables.authKey, {
       expiresIn: 3600 * 24 * 7,
     });
-    res.status(201).json({ user, token });
+    return res.status(201).json({ user, token });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
@@ -70,9 +70,9 @@ exports.getUser = async (req, res) => {
     if (!user) {
       throw new Error("No user found");
     }
-    res.status(200).json({ user });
+    return res.status(200).json({ user });
   } catch (error) {
-    res.status(400).json({ msg: error.message });
+    return res.status(400).json({ msg: error.message });
   }
 };
 exports.updateRole = async (req, res) => {
@@ -91,10 +91,10 @@ exports.updateRole = async (req, res) => {
     }
     updates.forEach((update) => (user[update] = req.body[update]));
     await user.save();
-    
-    res.status(200).json({ user });
+
+    return res.status(200).json({ user });
   } catch (error) {
-    res.status(400).json({ msg: error.message });
+    return res.status(400).json({ msg: error.message });
   }
 };
 
@@ -111,10 +111,9 @@ exports.updateUser = async (req, res) => {
     const token = jwt.sign({ _id: user._id.toString() }, variables.authKey, {
       expiresIn: 3600 * 24 * 7,
     });
-    res.status(200).json({ user, token });
+    return res.status(200).json({ user, token });
   } catch (error) {
-    console.log(error.message);
-    res.status(400).json({ msg: error.message });
+    return res.status(400).json({ msg: error.message });
   }
 };
 
@@ -129,8 +128,8 @@ exports.statistics = async (req, res) => {
       teachers,
       students,
     };
-    res.status(200).json(list);
+    return res.status(200).json(list);
   } catch (error) {
-    res.status(400).json({ msg: error.message });
+    return res.status(400).json({ msg: error.message });
   }
 };

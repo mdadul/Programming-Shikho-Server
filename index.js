@@ -16,6 +16,7 @@ const syllabusRouter = require('./routers/syllabus');
 const enrollmentRouter = require('./routers/enrollment');
 const assignmentRouter = require('./routers/assignment');
 const noticeRouter = require('./routers/notice');
+const teacherRouter = require('./routers/teacher');
 
 app.use(cors())
 app.use(express.json())
@@ -33,6 +34,7 @@ app.use('/syllabus', syllabusRouter);
 app.use('/enroll', enrollmentRouter);
 app.use('/assignments', assignmentRouter);
 app.use('/notices', noticeRouter);
+app.use('/teachers', teacherRouter);
 
 
 app.listen(port, () => {

@@ -4,10 +4,11 @@ exports.createSyllabus = async (req, res) => {
   try {
     const syllabus = new Syllabus(req.body);
     await syllabus.save();
-    res.status(201).json({ msg: "Topic created successfully", syllabus });
+    return res
+      .status(201)
+      .json({ msg: "Topic created successfully", syllabus });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: error.message });
+    return res.status(500).json({ msg: error.message });
   }
 };
 
@@ -15,7 +16,6 @@ exports.createSyllabus = async (req, res) => {
 
 exports.updateSyllabus = async (req, res) => {
   try {
-    console.log(req.params.id);
     const syllabus = await Syllabus.findOne(req.params.id);
     if (!syllabus) {
       throw new Error("Syllabus not found");
@@ -23,10 +23,11 @@ exports.updateSyllabus = async (req, res) => {
     const updates = Object.keys(req.body);
     updates.forEach((update) => (syllabus[update] = req.body[update]));
     await syllabus.save();
-    res.status(200).json({ msg: "Topic updated successfully", syllabus });
+    return res
+      .status(200)
+      .json({ msg: "Topic updated successfully", syllabus });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: error.message });
+    return res.status(500).json({ msg: error.message });
   }
 };
 
@@ -38,10 +39,11 @@ exports.deleteSyllabus = async (req, res) => {
     if (!syllabus) {
       throw new Error("Syllabus not found");
     }
-    res.status(200).json({ msg: "Topic deleted successfully", syllabus });
+    return res
+      .status(200)
+      .json({ msg: "Topic deleted successfully", syllabus });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: error.message });
+    return res.status(500).json({ msg: error.message });
   }
 };
 
@@ -49,9 +51,8 @@ exports.deleteSyllabus = async (req, res) => {
 exports.getSyllabusByCourseId = async (req, res) => {
   try {
     const syllabus = await Syllabus.find({ courseId: req.params.id });
-    res.status(200).json({ syllabus });
+    return res.status(200).json({ syllabus });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: error.message });
+    return res.status(500).json({ msg: error.message });
   }
 };

@@ -8,6 +8,14 @@ const router = new express.Router();
 // Getting all users
 router.get("/", auth, role.check(ROLES.ADMIN), userController.getAllUsers);
 
+// Getting all teachers
+router.get(
+  "/teachers",
+  auth,
+  role.check(ROLES.ADMIN),
+  userController.getAllTeachers
+);
+
 // Register a user
 router.post("/signup", userController.signup);
 
