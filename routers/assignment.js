@@ -14,7 +14,7 @@ router.post(
 
 router.get("/course/:id", auth, assignmentController.getAllAssignments);
 
-router.get("/:id", assignmentController.getAssignmentById);
+router.get("/:id",auth, role.check(ROLES.STUDENT,ROLES.ADMIN), assignmentController.getAssignmentById);
 
 router.put(
   "/:id",
