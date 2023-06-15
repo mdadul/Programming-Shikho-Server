@@ -43,3 +43,20 @@ exports.deleteTeacher = async (req, res) => {
     return res.status(400).json({ msg: error.message });
   }
 };
+
+
+// get all course of a teacher
+exports.getAllCourses = async (req, res) => {
+  try {
+    const courses = await Teacher.find({ teacherId: req.params.id })
+      .populate("teacherId", "name email avatar")
+      .populate("courseId", "name description category fee image")
+      .exec();
+    if (courses.length === 0) {
+      return res.status(200).json({ msg: "No courses found" });
+    }
+    return res.status(200).json({ courses });
+  } catch (error) {
+    return res.status(400).json({ msg: error.message });
+  }
+}
