@@ -8,7 +8,7 @@ const auth = require("../middlewares/auth");
 router.get(
   "/course/:id",
   auth,
-  role.check(ROLES.ADMIN),
+  role.check(ROLES.ADMIN,ROLES.TEACHER),
   enrollmentController.getAllEnrollments
 );
 router.get(
@@ -21,7 +21,7 @@ router.post("/", auth, enrollmentController.createEnrollment);
 router.put(
   "/:id",
   auth,
-  role.check(ROLES.ADMIN),
+  role.check(ROLES.ADMIN, ROLES.TEACHER),
   enrollmentController.updateEnrollment
 );
 router.delete(
