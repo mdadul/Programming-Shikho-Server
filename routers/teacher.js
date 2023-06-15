@@ -24,4 +24,7 @@ router.delete(
   teacherController.deleteTeacher
 );
 
+// get all course of a teacher
+router.get("/me/:id",auth,role.check(ROLES.TEACHER), teacherController.getAllCourses);
+
 module.exports = router;
